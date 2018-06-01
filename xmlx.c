@@ -9,6 +9,28 @@ char *xml_getNodeName(xmlNode * a_node)
     return((char *)a_node->name);
 }
 
+char *xml_getNodeContent(xmlNode * a_node)
+{
+    if ((NULL == a_node) || (NULL == a_node->children)) {
+        return("");
+    }
+    if ((a_node->children->type = XML_TEXT_NODE) && (a_node->children->content)) {
+        return((char *)xmlEncodeEntitiesReentrant(a_node->doc, a_node->children->content));
+    }
+    return("");
+}
+
+int xml_isTextNode(xmlNode * a_node)
+{
+    if ((NULL == a_node) || (NULL == a_node->children)) {
+        return(0);
+    }
+    if (a_node->children->type == XML_TEXT_NODE) {
+       return(1);
+    }
+    return(0);
+}
+
 xmlAttr *xml_getAttrList(xmlNode * parent_node) {
     return(parent_node->properties);
 }
