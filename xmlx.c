@@ -3,42 +3,40 @@
 #include <libxml/parser.h>
 #include <libxml/tree.h>
 
-char *xml_getNodeName(xmlNode * a_node)
+char *xml_getNodeName(xmlNode *node)
 {
-    if (NULL == a_node) return("");
-    return((char *)a_node->name);
+    if (node == NULL) return("");
+    return( (char *) node->name );
 }
 
-char *xml_getNodeContent(xmlNode * a_node)
+char *xml_getNodeContent(xmlNode *node)
 {
-    if ((NULL == a_node) || (NULL == a_node->children)) {
-        return("");
-    }
-    if ((a_node->children->type = XML_TEXT_NODE) && (a_node->children->content)) {
-        return((char *)xmlEncodeEntitiesReentrant(a_node->doc, a_node->children->content));
+    if ((node == NULL) || (node->children == NULL)) { return(""); }
+    
+    if ((node->children->type = XML_TEXT_NODE) && (node->children->content)) {
+        return((char *)xmlEncodeEntitiesReentrant(node->doc, node->children->content));
     }
     return("");
 }
 
-int xml_isTextNode(xmlNode * a_node)
+int xml_isTextNode(xmlNode *node)
 {
-    if ((NULL == a_node) || (NULL == a_node->children)) {
-        return(0);
-    }
-    if (a_node->children->type == XML_TEXT_NODE) {
+    if ((node == NULL) || (node->children == NULL)) { return(0); }
+ 
+    if (node->children->type == XML_TEXT_NODE) {
        return(1);
     }
     return(0);
 }
 
-xmlAttr *xml_getAttrList(xmlNode * parent_node) {
-    return(parent_node->properties);
+xmlAttr *xml_getAttrList(xmlNode *node) {
+    return(node->properties);
 }
 
-int xml_countAttr(xmlNode * parent_node) {
+int xml_countAttr(xmlNode *node) {
     xmlAttr *cur_attr = NULL;
     int count = 0;
-    for (cur_attr = parent_node->properties; cur_attr; cur_attr = cur_attr->next) {
+    for (cur_attr = node->properties; cur_attr; cur_attr = cur_attr->next) {
       count++;
     }
     return(count);
